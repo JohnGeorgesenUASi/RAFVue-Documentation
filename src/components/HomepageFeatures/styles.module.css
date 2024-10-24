@@ -1,0 +1,10 @@
+.features {
+  justify-content: center;
+  width: 100%;
+}
+
+.featureSvg {
+  height: 200px;
+  width: 200px;
+  margin: 0 auto;
+}
