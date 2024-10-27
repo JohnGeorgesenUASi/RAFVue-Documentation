@@ -1,123 +1,60 @@
 ---
-id: follow-up
-title: Follow-Up Page
-sidebar_label: Follow-Up
+id: follow-up-management
+title: Follow-Up 
+sidebar_label: Follow-Up 
+sidebar_position: 3
 ---
 
-# Follow-Up Page
+# Follow-Up
 
-This document provides a comprehensive overview of the `follow_up.hbs` file, which is part of the RAFVue application. This file is responsible for rendering the Follow-Up interface, allowing users to manage and track patient follow-ups.
+This document provides a comprehensive overview of the follow-up management functionality in the RAFVue application. It covers the `follow_up.hbs` and `follow_up_model.hbs` files, which are responsible for rendering the follow-up management interface and handling the follow-up process for patients.
 
-## Overview
+### Overview
 
-The `follow_up.hbs` file is a Handlebars template that combines HTML, CSS, and JavaScript to create a dynamic and interactive interface for managing patient follow-ups. It includes data tables, modals, and various input controls to facilitate follow-up management.
+The follow-up management feature allows users to track and manage follow-up cases for patients who require further attention or action. The `follow_up.hbs` file displays a list of all patients with follow-up cases, while the `follow_up_model.hbs` file provides a dialog box for updating the follow-up status and adding comments.
 
-## Structure
+### Key Features
 
-### HTML
+#### 1. Listing Follow-Up Cases
 
-- **Container Elements**: 
-  - The main container is a `<div>` with the class `container body`, which houses the entire page content.
-  - The page is divided into sections using Bootstrap grid classes like `col-md-4` and `col-sm-6`.
+The `follow_up.hbs` file renders a table that lists all the patients with follow-up cases. 
 
-- **Sections**:
-  - **Follow-Up Details**: Displays detailed information about selected follow-ups.
-  - **Data Tables**: Displays follow-up data in a tabular format with options for sorting and filtering.
-  - **Modals**: Used for actions like adding or editing additional notes.
+Clicking on a patient row expands the row to show additional details about the patient's follow-up cases, including the ICD-10 code, description, type, start date, status, and update functionality.
 
-### CSS
+#### 2. Updating Follow-Up Status
 
-- **Styling**:
-  - Custom styles are defined for various elements, including tables, buttons, and modals.
-  - Responsive design is achieved using media queries to adjust layout for different screen sizes.
+When the "Update" button is clicked for a specific follow-up case, the `follow_up_model.hbs` dialog box is opened. This dialog box allows users to update the follow-up status and add comments for the selected case.
 
-- **Classes**:
-  - `.tableBorder`: Styles the main data table with border and margin.
-  - `.patientDetails`: Styles the patient details section with padding and background color.
+The follow-up status can be updated to one of the following values:
+- Not Started
+- In Progress
+- Closed
 
-### JavaScript
+Users can also add comments or rationale for the follow-up status update.
 
-- **Libraries**:
-  - Includes external libraries such as jQuery, D3.js, and DataTables for data manipulation and visualization.
+#### 3. Saving Follow-Up Progress
 
-- **Data Fetching**:
-  - Uses AJAX to fetch data for follow-up details, additional notes, and other dynamic content.
+When the user clicks the "Save Progress" button in the `follow_up_model.hbs` dialog box, the following actions are performed:
 
-- **Event Handlers**:
-  - Click events are set up for buttons to trigger actions like saving notes, closing cases, and reviewing follow-ups.
+1. A new row is inserted into the `follow_up` table with the updated follow-up status, rationale, and other relevant details.
+2. If the follow-up type is "Update claim" and the status is "In Progress", the `case_review` table is updated with the new follow-up status for the corresponding patient and diagnosis code.
+3. If the follow-up status is "Closed":
+   - The `case_review` table is updated with the follow-up status, edit date, followup query outcome, and query process rate.
+   - The query process rate is calculated as the difference in days between the started time and the edit date.
 
-## Key Features
+#### 4. Viewing Closed Follow-Up Cases
 
-- **Follow-Up Management**: Users can manage patient follow-ups, including adding notes and closing cases.
-- **Dynamic Data Loading**: Fetches and updates data asynchronously using AJAX, ensuring the page displays the most current information.
-- **Responsive Design**: Adjusts layout and styles based on screen size to ensure usability across devices.
+When the "Closed" button is clicked for a specific follow-up case, the `followup_closed` route is triggered, and the `renderClosedFollowup` function in the controller is called. This function renders the closed follow-up details for the selected case.
 
-## API Documentation
+### Route and Service Layer
 
-### Endpoints
+The route and service layer handle the API endpoints and database interactions for the follow-up management functionality. They are responsible for processing the requests, performing the necessary database operations, and returning the appropriate responses.
 
-1. **GET `/full_name_to_fake_name_with_mrn_dob.json`**
-   - **Description**: Provides a mapping of full names to fake names, including MRN and DOB for anonymization.
-   - **Usage**: Used to anonymize patient data when `sensitiveMode` is enabled.
-   - **Response**: JSON object with full names as keys and objects containing `fakeName` and `mrnNumber`.
+- The `follow_up.route.js` file defines the API endpoints for the follow-up management functionality.
+- The `follow_up.service.js` file contains the service layer logic for interacting with the database and performing the required operations.
 
-2. **GET `/view_Additional`**
-   - **Description**: Retrieves additional notes for a specific patient.
-   - **Usage**: Populates the additional notes dropdown with data.
-   - **Response**: JSON array of notes.
+### Dependencies
 
-3. **POST `/unlock_case_rafvue`**
-   - **Description**: Re-opens a closed case for further review.
-   - **Usage**: Triggered when the user clicks the "Unlock" button for a case.
-   - **Request Data**: 
-     - `idim`: The ID of the case to unlock.
-   - **Response**: Confirmation message upon successful unlock.
-
-4. **POST `/caseReview`**
-   - **Description**: Marks a case as reviewed.
-   - **Usage**: Triggered when the user clicks the "Reviewed" button for a case.
-   - **Request Data**: 
-     - `idim`: The ID of the case.
-     - `mrn`: The MRN of the patient.
-   - **Response**: Confirmation message upon successful review.
-
-5. **POST `/save_notes`**
-   - **Description**: Saves additional notes for a specific patient.
-   - **Usage**: Triggered when the user clicks the "Save Notes" button.
-   - **Request Data**: 
-     - `notes`: The content of the notes.
-     - `final_patient_id`: The ID of the patient.
-   - **Response**: Confirmation message upon successful save.
-
-6. **POST `/close_case`**
-   - **Description**: Closes a case after follow-up is completed.
-   - **Usage**: Triggered when the user clicks the "Close Case" button.
-   - **Request Data**: 
-     - `final_patient_id`: The ID of the patient.
-   - **Response**: Confirmation message upon successful closure.
-
-### AJAX Implementation
-
-- **AJAX Calls**: The file uses jQuery's `$.ajax` and `d3.json` methods to asynchronously fetch data from the server.
-- **Success Handlers**: Each AJAX call includes a success handler that processes the returned data and updates the DOM elements or tables accordingly.
-
-## Usage
-
-1. **Managing Follow-Ups**: Users can view and manage follow-up details, including adding notes and closing cases.
-2. **Interactivity**: Users can interact with the data table, modals, and other UI elements to manage follow-ups effectively.
-3. **Customization**: Styles and configurations can be adjusted to fit specific needs or preferences.
-
-## Dependencies
-
-- **Bootstrap**: For responsive grid layout and styling.
-- **jQuery**: For DOM manipulation and AJAX requests.
-- **D3.js**: For data-driven document manipulation and charting.
-- **DataTables**: For enhanced table features like sorting and filtering.
-
-## Conclusion
-
-The `follow_up.hbs` file is a crucial component of the RAFVue application, providing users with a comprehensive interface to manage and track patient follow-ups. Its combination of follow-up management, responsive design, and dynamic data loading makes it a powerful tool for healthcare management.
-
----
-
-This documentation should provide a clear understanding of the file's purpose, structure, functionality, and API interactions. Let me know if you need further details or specific sections expanded!
+- **Handlebars**: Used as the templating engine for rendering the `follow_up.hbs` and `follow_up_model.hbs` files.
+- **Express**: Web framework for handling HTTP requests and responses.
+- **MySQL**: Database management system for storing and retrieving follow-up data.
