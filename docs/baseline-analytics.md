@@ -65,10 +65,55 @@ The `tabs_baseline.hbs` file serves as the main template file for the tabs displ
 
 </TabItem>
 <TabItem value="hcc-group-analysis" label="HCC Group Analysis">
-Let the soothing melodies of music transport you
+The "HCC Group Analysis" tab in the Baseline Analytics page provides insights into the diagnostic groups and their associated HCCs for both CMS v.24 and CMS v.28 models.
+
+### Key Components
+
+1. **Tabs**: The tab allows users to switch between CMS v.24 and CMS v.28 data views.
+   - CMS v.24 Tab: Displays the diagnostic groups data for the CMS v.24 model.
+   - CMS v.28 Tab: Displays the diagnostic groups data for the CMS v.28 model.
+
+2. **Data Tables**: The tab includes two data tables, one for each CMS model (v.24 and v.28)
+
+3. **Download Data**: Users can download the displayed diagnostic groups data as CSV files for each CMS model.
+
+### Route and Service Layer
+
+The route and service layer handle the API endpoints and database interactions for the HCC Group Analysis functionality. They are responsible for processing the requests, performing the necessary database operations, and returning the appropriate responses.
+
+- The tab uses AJAX to load the diagnostic groups data from the server-side API endpoints (`./get_v24_groups_data` and `./get_v28_groups_data`).
+
+- The `baseline_analytics.service.js` file contains the service layer logic for interacting with the database and performing the required operations.
+
 </TabItem>
 <TabItem value="provider-report" label="Provider Report">
-Let the soothing melodies of music transport you
+The "Provider Report" tab in the Baseline Analytics page provides detailed information about the performance of individual providers and their associated specialties.
+
+### Key Components
+
+1. **Provider Dropdown**: Allows users to select one or more providers from the dropdown list to filter the report data. The total count of providers is displayed next to the dropdown label.
+
+2. **Specialty Dropdown**: Allows users to select one or more specialties from the dropdown list to filter the report data. The total count of specialties is displayed next to the dropdown label.
+
+3. **Data Table**: Displays the provider report data in a tabular format.
+
+4. **Download Data**: Allows users to download the displayed provider report data as a CSV file.
+
+### Sensitive Mode
+
+- The tab includes a "sensitive mode" feature, which replaces sensitive information (provider names and NPI numbers) with fake data when enabled.
+- The sensitive mode is controlled by the `{{sensitiveMode}}` variable in the server-side rendering.
+
+### Route and Service Layer
+
+The route and service layer handle the API endpoints and database interactions for the Provider Report functionality. They are responsible for processing the requests, performing the necessary database operations, and returning the appropriate responses.
+
+- The `baseline_analytics.route.js` file defines the API endpoints for retrieving the provider report data, provider details, specialty details, and total counts.
+  - `/provider_report_data`: Retrieves the provider report data based on the selected filters.
+  - `/get_data_of_providers`: Retrieves the list of providers for the dropdown.
+  - `/get_data_of_specialities`: Retrieves the list of specialties for the dropdown.
+  - `/get_totals_provider_specialty`: Retrieves the total counts of providers and specialties.
+
 </TabItem>
 </Tabs>
 
