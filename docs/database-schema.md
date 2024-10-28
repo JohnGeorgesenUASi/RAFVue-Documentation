@@ -9,6 +9,24 @@ import TabItem from '@theme/TabItem';
 
 <Tabs>
 <TabItem value="schema-design" label="Schema Design" default>
+
+## Database Schema Structure
+
+In the RAFVue application, the database schema follows a specific naming convention to handle different versions of the data model. The schema names are structured as follows:
+
+- The main schema is named `{schema_name}`, where `{schema_name}` represents the actual name of the schema (e.g., demo_rafvue, rafvue).
+- Subsequent versions of the schema are named `{schema_name}_v28`, `{schema_name}_vXX`, etc., where v28 and vXX represent the version numbers (e.g., demo_rafvue_v28, rafvue_v28, raf_schema_v30).
+
+```
+  departments.forEach((department) => {
+    department.database_name_with_dot = department.database_name + ".";
+    department.database_name_v28 = department.database_name + "_v28";
+    department.database_name_v28_with_dot = department.database_name + "_v28.";
+  });
+```
+
+This naming convention allows for the management of multiple versions of the data model within the same database, ensuring compatibility and data integrity across different versions of the RAFVue application.
+
 ## 837 Parser
 
 This repository [837p Parser](https://github.com/JohnGeorgesenUASi/837-Parser) contains code for parsing 837p files and dumping the data into a MySQL database. The code creates base tables and follows the schema structure outlined in the [Lucidchart diagram](https://lucid.app/lucidchart/7fba50c1-96e5-4676-a908-9d8c78b61a73/edit?invitationId=inv_6c19678c-7915-48e9-88a7-c4635d92e211&page=0_0#).
