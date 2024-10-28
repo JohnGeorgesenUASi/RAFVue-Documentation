@@ -45,27 +45,7 @@ The RAFVue project relies on several dependencies that need to be installed befo
 The RAFVue application requires an environment file (`.env`) to store sensitive configuration details such as API keys, database credentials, and other settings. To add the environment file, follow these steps:
 
 1. Create a new file named `.env` in the main folder of the RAFVue repository.
-2. Open the `.env` file in a text editor and copy the below contents.
-```
-database_server='database-1.cf4cmuu62db6.us-east-2.rds.amazonaws.com'
-database_user='admin'
-database_password = 'Baymm2015!'
-ssn_password = 'scntILjIB4C1cLRpzsbj9P2Jq2WEa29y'
-process_cfs='no'
-process_rcic='no'
-mode='local'
-session_key = '~PN<b8u6h^#pK32*S.{jS2}68U$/?L7:g-Uzu]'
-session_secret = "3}GKdGh{r@}Quv>Szs!xR'YMKC2s-ar?%@j&,m"
-mail_password = 'Murat2008!'
-mail_user = 'murat.ozer@peel9.net'
-http_port = '80'
-http_portDev = '3000'
-skip_migrations_at_start = 'false'
-unicodeTransformation = "utf-8"
-commandPath = ''
-s3_bucket_host = https://s3.wasabisys.com/
-s3_bucket_name = peel9attach
-```
+2. Open the `.env` file in a text editor and copy the contents (Ask around a developer for a copy).
 3. Save the file and close the text editor.
 
 ### Step 4: Run the Application
